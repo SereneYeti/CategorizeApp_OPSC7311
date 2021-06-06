@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "Categorize_Vieyra_18022490_Task2"

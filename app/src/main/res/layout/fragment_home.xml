@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:background="@android:color/holo_blue_dark"
+    android:textSize="30sp"
+    android:tooltipText="Home Fragment">
+
+
+    <TextView
+        android:id="@+id/tvCategoryGoalAmount2"
+        android:layout_width="315dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="13dp"
+        android:text="Enter the amount you wish to set as your goal:"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_CategoryName_" />
+
+    <EditText
+        android:id="@+id/etGoalNumItems2"
+        android:layout_width="172dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
+        android:autoText="false"
+        android:capitalize="sentences"
+        android:ems="10"
+        android:inputType="number"
+        android:selectAllOnFocus="false"
+        android:singleLine="true"
+        android:text="5"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tvCategoryGoalAmount2"
+        app:layout_constraintTop_toBottomOf="@+id/btnCreateCategory_" />
+
+    <Button
+        android:id="@+id/btnCreateCategory_"
+        android:layout_width="176dp"
+        android:layout_height="72dp"
+        android:text="Create Category"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_CategoryName_"
+        android:layout_width="314dp"
+        android:layout_height="73dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Enter Category Name to create"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/btnCreateCategory_"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#CCC2C2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCategoryGoalAmount2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:tooltipText="Categories Fragment"
+    android:textSize="30sp"
+    android:layout_centerInParent="true">
+
+    <FrameLayout
+        android:layout_width="407dp"
+        android:layout_height="728dp"
+        android:layout_centerInParent="true"
+        android:background="#DCE8EA">
+
+        <TextView
+            android:id="@+id/tvCategoryGoalAmount"
+            android:layout_width="264dp"
+            android:layout_height="44dp"
+            android:layout_gravity="start|top"
+            android:layout_marginTop="60dp"
+            android:text="Enter the amount you wish to set as your goal:"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvRecieveText2"
+            android:layout_width="301dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="50dp"
+            android:background="#FFFFFF"
+            android:text="This text should have changed!"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etCategoryName"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Enter Category Name" />
+
+        <EditText
+            android:id="@+id/etGoalNumItems"
+            android:layout_width="129dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top|end"
+            android:layout_marginTop="60dp"
+            android:autoText="false"
+            android:capitalize="sentences"
+            android:ems="10"
+            android:inputType="number"
+            android:selectAllOnFocus="false"
+            android:singleLine="true"
+            android:text="5"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/ivCategoryPicture"
+            android:layout_width="409dp"
+            android:layout_height="362dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:scaleType="fitXY"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <Button
+            android:id="@+id/btnCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginTop="55dp"
+            android:text="Create Category" />
+
+        <Button
+            android:id="@+id/btnCapture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center|left"
+            android:text="Take Picture" />
+    </FrameLayout>
+</RelativeLayout>
