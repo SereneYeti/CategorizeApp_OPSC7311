@@ -30,6 +30,7 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private Button button;
     private EditText editText;
+    private EditText goalText;
     private ArrayList<String> items;
     private ArrayAdapter itemsadapter;
     private ListView listView;
@@ -114,6 +115,7 @@ public class HomeFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_home,container,false);
         button = v.findViewById(R.id.btnCreateCategory_);
         editText = v.findViewById(R.id.et_CategoryName_);
+        goalText = v.findViewById(R.id.etGoalNumItems2);
 
         button.setOnClickListener(new  View.OnClickListener() {
             @Override
@@ -135,6 +137,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 additem(v);
+
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("itemsArrayList",items);
+
+                CreateCategoryFragment createCategoryFragment = new CreateCategoryFragment();
+                createCategoryFragment.setArguments(bundle);
+                Singleton.getInstance().setTestVar2(editText.getText().toString());
+
+                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container,createCategoryFragment).addToBackStack("CreateCategoryFragment").commit();
             }
         });
 
@@ -162,9 +173,12 @@ public class HomeFragment extends Fragment {
 
     private void additem(View v) {
         String itemText = editText.getText().toString();
+        int goalAmount = Integer.parseInt(goalText.getText().toString());
 
         if(!(itemText.equals(""))){
             itemsadapter.add(itemText);
+            Singleton.getInstance().Categories.add(itemText);
+            Singleton.getInstance().Goals.add(goalAmount);
             editText.setText("");
         }
         else

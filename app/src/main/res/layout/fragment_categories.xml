@@ -15,16 +15,6 @@
         android:background="#DCE8EA">
 
         <TextView
-            android:id="@+id/tvCategoryGoalAmount"
-            android:layout_width="264dp"
-            android:layout_height="44dp"
-            android:layout_gravity="start|top"
-            android:layout_marginTop="60dp"
-            android:text="Enter the amount you wish to set as your goal:"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/tvRecieveText2"
             android:layout_width="301dp"
             android:layout_height="wrap_content"
@@ -37,28 +27,12 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/etCategoryName"
+            android:id="@+id/etItemName"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Enter Category Name" />
-
-        <EditText
-            android:id="@+id/etGoalNumItems"
-            android:layout_width="129dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|top|end"
-            android:layout_marginTop="60dp"
-            android:autoText="false"
-            android:capitalize="sentences"
-            android:ems="10"
-            android:inputType="number"
-            android:selectAllOnFocus="false"
-            android:singleLine="true"
-            android:text="5"
-            android:textAlignment="center"
-            android:textSize="18sp" />
+            android:text="Enter Item Name" />
 
         <ImageView
             android:id="@+id/ivCategoryPicture"
@@ -70,12 +44,12 @@
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <Button
-            android:id="@+id/btnCreate"
+            android:id="@+id/btnCreateItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_marginTop="55dp"
-            android:text="Create Category" />
+            android:text="Create Item" />
 
         <Button
             android:id="@+id/btnCapture"
@@ -83,5 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center|left"
             android:text="Take Picture" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="100dp" />
     </FrameLayout>
 </RelativeLayout>

@@ -1,16 +1,18 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
+
+import static android.content.ContentValues.TAG;
 
 public class CreateCategoryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -39,6 +41,7 @@ public class CreateCategoryFragment extends Fragment {
     public EditText et_CategoryName;
     public EditText et_GoalAmount;
     ImageView iv_CategoryPicture;
+    Spinner mSpinner;
 
     public CreateCategoryFragment() {
         // Required empty public constructor
@@ -69,7 +72,6 @@ public class CreateCategoryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
     @Nullable
     @Override
@@ -79,10 +81,10 @@ public class CreateCategoryFragment extends Fragment {
         tv_RecieveText2 = v.findViewById(R.id.tvRecieveText2);
 
         btn_Capture = v.findViewById(R.id.btnCapture);
-        btn_Create = v.findViewById(R.id.btnCreate);
+        btn_Create = v.findViewById(R.id.btnCreateItem);
         iv_CategoryPicture = v.findViewById(R.id.ivCategoryPicture);
-        et_CategoryName = v.findViewById(R.id.etCategoryName);
-        et_GoalAmount = v.findViewById(R.id.etGoalNumItems);
+        et_CategoryName = v.findViewById(R.id.etItemName);
+        //et_GoalAmount = v.findViewById(R.id.etGoalNumItems);
 
         btn_Capture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +116,25 @@ public class CreateCategoryFragment extends Fragment {
                 Singleton.getInstance().setCategories(tempNamesList);
             }
         });
+
+        mSpinner = v.findViewById(R.id.spinner);
+
+        ArrayList<String> options=new ArrayList<String>();
+
+        if(savedInstanceState != null)
+        {
+            ArrayList<String> data = savedInstanceState.getStringArrayList("itemsArrayList");
+            options = data;
+        }
+        //options = new ArrayList<>(Singleton.getInstance().getCategories());
+
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,options);
+        adapter.notifyDataSetChanged();
+        mSpinner.setAdapter(adapter);
+
+
 
         if(((MainActivity)getActivity()).getTestVar() != null)
         {
