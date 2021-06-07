@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
     android:background="@android:color/black"
-    android:tooltipText="Categories Fragment"
     android:textSize="30sp"
-    android:layout_centerInParent="true">
+    android:tooltipText="Categories Fragment">
 
     <FrameLayout
         android:layout_width="407dp"
@@ -39,7 +40,7 @@
             android:layout_width="409dp"
             android:layout_height="362dp"
             android:layout_gravity="center"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="35dp"
             android:scaleType="fitXY"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
@@ -64,5 +65,38 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginTop="100dp" />
+
+        <TextView
+            android:id="@+id/tvCategoryName"
+            android:layout_width="224dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="60dp"
+            android:text="Category Names:"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvItemDate"
+            android:layout_width="224dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="126dp"
+            android:text="Date Added:"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etItemDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="155dp"
+            android:ems="10"
+            android:inputType="date"
+            android:text="dd/mm/yyyy"
+            android:textAlignment="center" />
     </FrameLayout>
 </RelativeLayout>

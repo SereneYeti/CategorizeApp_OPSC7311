@@ -2,6 +2,7 @@ package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Element;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +37,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> items;
     private ArrayAdapter itemsadapter;
     private ListView listView;
+    private static final String TAG = "HomeFragment";
 
     List<String> ITEM_LIST;
     ArrayAdapter<String> arrayadapter;
@@ -144,8 +148,10 @@ public class HomeFragment extends Fragment {
                 CreateCategoryFragment createCategoryFragment = new CreateCategoryFragment();
                 createCategoryFragment.setArguments(bundle);
                 Singleton.getInstance().setTestVar2(editText.getText().toString());
+                Singleton.getInstance().setCategories(items);
+                Singleton.getInstance().Goals.add(R.id.etGoalNumItems2);
 
-                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container,createCategoryFragment).addToBackStack("CreateCategoryFragment").commit();
+                //getParentFragmentManager().beginTransaction().replace(R.id.fragment_container,createCategoryFragment).addToBackStack("CreateCategoryFragment").commit();
             }
         });
 
@@ -153,6 +159,22 @@ public class HomeFragment extends Fragment {
         itemsadapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_list_item_1,items);
         listView.setAdapter(itemsadapter);
         setUpListViewListner();
+
+        //Log.i(TAG, " Is this empty: " + String.valueOf(Singleton.getInstance().Categories.isEmpty()));
+
+        if(Singleton.getInstance().Categories.isEmpty() == false && Singleton.getInstance().Categories.size() != 0)
+        {
+            List<String> test = Singleton.getInstance().getCategories();
+            //Log.i(TAG, "I'm in!");
+            //Log.i(TAG, Singleton.getInstance().Categories.get(0));
+            //Log.i(TAG, Singleton.getInstance().Categories.get(0));
+
+            for (String s: test
+            ) {
+                repopluteList(v,s);
+
+            }
+        }
         return v;
     }
 
@@ -178,7 +200,21 @@ public class HomeFragment extends Fragment {
         if(!(itemText.equals(""))){
             itemsadapter.add(itemText);
             Singleton.getInstance().Categories.add(itemText);
+            Log.i(TAG, Singleton.getInstance().Categories.get(Singleton.getInstance().Categories.size()-1));
             Singleton.getInstance().Goals.add(goalAmount);
+            editText.setText("");
+        }
+        else
+        {
+            Toast.makeText(getContext(),"Please enter text...",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void repopluteList(View v, String itemText) {
+
+        if(!(itemText.equals(""))){
+            itemsadapter.add(itemText);
             editText.setText("");
         }
         else

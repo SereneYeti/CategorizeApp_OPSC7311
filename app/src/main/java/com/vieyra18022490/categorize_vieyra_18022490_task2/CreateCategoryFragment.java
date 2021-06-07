@@ -30,6 +30,7 @@ public class CreateCategoryFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "CreateItem";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -38,7 +39,7 @@ public class CreateCategoryFragment extends Fragment {
     private TextView tv_RecieveText2;
     public Button btn_Capture;
     public Button btn_Create;
-    public EditText et_CategoryName;
+    public EditText et_ItemName;
     public EditText et_GoalAmount;
     ImageView iv_CategoryPicture;
     Spinner mSpinner;
@@ -83,7 +84,7 @@ public class CreateCategoryFragment extends Fragment {
         btn_Capture = v.findViewById(R.id.btnCapture);
         btn_Create = v.findViewById(R.id.btnCreateItem);
         iv_CategoryPicture = v.findViewById(R.id.ivCategoryPicture);
-        et_CategoryName = v.findViewById(R.id.etItemName);
+        et_ItemName = v.findViewById(R.id.etItemName);
         //et_GoalAmount = v.findViewById(R.id.etGoalNumItems);
 
         btn_Capture.setOnClickListener(new View.OnClickListener() {
@@ -96,24 +97,20 @@ public class CreateCategoryFragment extends Fragment {
         btn_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ArrayList<Category> tempList = Singleton.getInstance().getCategoryList();
-                List<String> tempNamesList = Singleton.getInstance().getCategories();
-                List<Integer> tempGoalsList = Singleton.getInstance().getGoals();
-                //ArrayList<Item> tempItemList = new ArrayList<Item>();
-                int goal = 0;
+
                 try {
-                    goal = Integer.parseInt(et_GoalAmount.getText().toString());
-                    tempGoalsList.add(goal);
-                    tempNamesList.add(et_CategoryName.getText().toString());
+                    Item item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,iv_CategoryPicture);
+
+
+                    //Log.i(TAG, mSpinner.getSelectedItem().toString());
+
                 }
                 catch (NumberFormatException nfe){
                     System.out.println("could not parse " + nfe);
                 }
-                //Category newCategory = new Category(et_CategoryName.getText().toString() + tempList.size()+1,et_CategoryName.getText().toString(),goal,iv_CategoryPicture ,tempItemList);
-                //tempList.add(newCategory);
-                //Singleton.getInstance().setCategoryList(tempList);
-                tv_RecieveText2.setText("The category has been created!");
-                Singleton.getInstance().setCategories(tempNamesList);
+
+                tv_RecieveText2.setText("The Item has been created!");
+
             }
         });
 
@@ -125,6 +122,10 @@ public class CreateCategoryFragment extends Fragment {
         {
             ArrayList<String> data = savedInstanceState.getStringArrayList("itemsArrayList");
             options = data;
+        }
+        else
+        {
+            options = new ArrayList<String>(Singleton.getInstance().getCategories());
         }
         //options = new ArrayList<>(Singleton.getInstance().getCategories());
 
