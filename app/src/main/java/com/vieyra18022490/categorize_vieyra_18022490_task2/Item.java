@@ -8,12 +8,28 @@ public class Item {
 
     public String key;
     public String Name;
+    public String Date;
+
+
+
+    public Item() {
+
+    }
 
     public Item(String key, String name, int itemNum, ImageView picture) {
         this.key = key;
         Name = name;
         this.itemNum = itemNum;
         this.picture = picture;
+        Date = "";
+    }
+
+    public Item(String key, String name, int itemNum, ImageView picture, String date) {
+        this.key = key;
+        Name = name;
+        this.itemNum = itemNum;
+        this.picture = picture;
+        Date = date;
     }
 
     public int itemNum;
@@ -50,4 +66,8 @@ public class Item {
     public void setPicture(ImageView picture) {
         this.picture = picture;
     }
+
+    public String getDate() { return Date;  }
+
+    public void setDate(String date) { Date = date; }
 }

@@ -11,6 +11,17 @@
     android:tooltipText="Home Fragment">
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E3E3E3"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvCategoryGoalAmount2"
         android:layout_width="315dp"
@@ -19,6 +30,7 @@
         android:text="Enter the amount you wish to set as your goal:"
         android:textSize="14sp"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_CategoryName_" />
 
@@ -37,6 +49,7 @@
         android:text="5"
         android:textAlignment="center"
         android:textSize="18sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/tvCategoryGoalAmount2"
@@ -49,6 +62,7 @@
         android:text="Create Category"
         android:textAlignment="center"
         android:textSize="14sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,6 +74,7 @@
         android:inputType="text"
         android:text="Enter Category Name to create"
         android:textSize="14sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/btnCreateCategory_"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,10 +85,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#CCC2C2"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCategoryGoalAmount2" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCategoryGoalAmount2">
+
+    </ListView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

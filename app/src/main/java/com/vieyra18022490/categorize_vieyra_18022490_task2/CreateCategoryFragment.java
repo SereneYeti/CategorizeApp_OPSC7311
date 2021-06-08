@@ -1,7 +1,9 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -13,17 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 public class CreateCategoryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -36,13 +35,14 @@ public class CreateCategoryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     View v;
-    private TextView tv_RecieveText2;
+    //private TextView tv_RecieveText2;
     public Button btn_Capture;
     public Button btn_Create;
     public EditText et_ItemName;
     public EditText et_GoalAmount;
     ImageView iv_CategoryPicture;
     Spinner mSpinner;
+    public EditText et_ItemDate;
 
     public CreateCategoryFragment() {
         // Required empty public constructor
@@ -79,12 +79,13 @@ public class CreateCategoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_categories,container,false);
-        tv_RecieveText2 = v.findViewById(R.id.tvRecieveText2);
+        //tv_RecieveText2 = v.findViewById(R.id.tvRecieveText2);
 
         btn_Capture = v.findViewById(R.id.btnCapture);
         btn_Create = v.findViewById(R.id.btnCreateItem);
         iv_CategoryPicture = v.findViewById(R.id.ivCategoryPicture);
         et_ItemName = v.findViewById(R.id.etItemName);
+        et_ItemDate = v.findViewById(R.id.etItemDate);
         //et_GoalAmount = v.findViewById(R.id.etGoalNumItems);
 
         btn_Capture.setOnClickListener(new View.OnClickListener() {
@@ -95,12 +96,64 @@ public class CreateCategoryFragment extends Fragment {
             }
         });
         btn_Create.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
 
                 try {
-                    Item item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,iv_CategoryPicture);
 
+                    Context context = getContext();
+                    String tempDate = et_ItemDate.getText().toString();
+                    Item item;
+
+
+                    if(et_ItemName.getText().equals(""))
+                    {
+                        Toast.makeText(context,"Enter an item name.", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mSpinner.getSelectedItem() == null)
+                    {
+                        Toast.makeText(context,"Choose or create a catagory.", Toast.LENGTH_LONG).show();
+                    }
+                    else if(iv_CategoryPicture.getDrawable() == null)
+                    {
+                        Toast.makeText(context,"Take a photo to go with your item!", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        if(tempDate.contains("dd/mm/yyyy"))
+                        {
+                            item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,iv_CategoryPicture);
+                            Toast.makeText(context,"Item Created!", Toast.LENGTH_LONG).show();
+                            et_ItemName.setText("Item Name");
+                            mSpinner.setSelection(0);
+                            iv_CategoryPicture.setImageBitmap(null);
+                        }
+                        else
+                        {
+                            item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,iv_CategoryPicture, tempDate);
+                            Toast.makeText(context,"Item Created!", Toast.LENGTH_LONG).show();
+                            et_ItemName.setText("Item Name");
+                            mSpinner.setSelection(0);
+                            iv_CategoryPicture.setImageBitmap(null);
+                            et_ItemDate.setText("dd/mm/yyyy");
+                        }
+                        try {
+                            if(Singleton.getInstance().Catagories.containsKey(mSpinner.getSelectedItem().toString())){
+                                ArrayList<Item> tempItems = Singleton.getInstance().Catagories.get(mSpinner.getSelectedItem().toString());
+                                item.itemNum = tempItems.size();
+                                tempItems.add(tempItems.size(),item);
+                                Singleton.getInstance().Catagories.replace(mSpinner.getSelectedItem().toString(),tempItems);
+                                Toast.makeText(context,"Item Saved!", Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e(TAG, e.toString());
+                        }
+
+                    }
 
                     //Log.i(TAG, mSpinner.getSelectedItem().toString());
 
@@ -109,7 +162,7 @@ public class CreateCategoryFragment extends Fragment {
                     System.out.println("could not parse " + nfe);
                 }
 
-                tv_RecieveText2.setText("The Item has been created!");
+                //tv_RecieveText2.setText("The Item has been created!");
 
             }
         });
@@ -125,7 +178,7 @@ public class CreateCategoryFragment extends Fragment {
         }
         else
         {
-            options = new ArrayList<String>(Singleton.getInstance().getCategories());
+            options = new ArrayList<String>(Singleton.getInstance().getCategoryNames());
         }
         //options = new ArrayList<>(Singleton.getInstance().getCategories());
 
@@ -137,9 +190,9 @@ public class CreateCategoryFragment extends Fragment {
 
 
 
-        if(((MainActivity)getActivity()).getTestVar() != null)
+        //if(((MainActivity)getActivity()).getTestVar() != null)
         {
-            tv_RecieveText2.setText(((MainActivity)(getActivity())).getTestVar());
+            //tv_RecieveText2.setText(((MainActivity)(getActivity())).getTestVar());
         }
 
         return v;

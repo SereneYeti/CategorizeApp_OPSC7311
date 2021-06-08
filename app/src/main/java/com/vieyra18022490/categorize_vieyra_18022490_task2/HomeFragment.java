@@ -4,14 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,10 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Element;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -31,17 +29,16 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "HomeFragment";
+
     private Button button;
     private EditText editText;
     private EditText goalText;
+    private TextView goalAmountText;
+
     private ArrayList<String> items;
     private ArrayAdapter itemsadapter;
     private ListView listView;
-    private static final String TAG = "HomeFragment";
-
-    List<String> ITEM_LIST;
-    ArrayAdapter<String> arrayadapter;
-
 
     ArrayList<Recycling> recyclingArrayList = new ArrayList<Recycling>();
     RecyclerView recyclerView;
@@ -50,6 +47,7 @@ public class HomeFragment extends Fragment {
     String names [];
 
     //ListView listView;
+
     ArrayList<String> listItems;
     ArrayAdapter<String> adapter;
 
@@ -94,23 +92,33 @@ public class HomeFragment extends Fragment {
 
 
 
-    private void initialiseList() {
+   private void initialiseList() {
 
-        Recycling unknown = new Recycling("0", "Unknown",R.drawable.ic_baseline_insert_photo_24, "2");
-        recyclingArrayList.add(unknown);
-        Recycling things = new Recycling("1", "things",R.drawable.ic_baseline_insert_photo_24, "3");
-        recyclingArrayList.add(things);
-        Recycling destinations = new Recycling("2", "destinations",R.drawable.ic_baseline_insert_photo_24, "5");
-        recyclingArrayList.add(destinations);
-    }
-    private void setUpRecycler() {
-        //recyclerView = (RecyclerView)v.findViewById(R.id.recycleView);
-        RecycleAdapter recycleAdapter = new RecycleAdapter(recyclingArrayList);
+       Recycling unknown = new Recycling("0", "Unknown",R.drawable.ic_baseline_insert_photo_24, "2");
+       recyclingArrayList.add(unknown);
+       Recycling things = new Recycling("1", "things",R.drawable.ic_baseline_insert_photo_24, "3");
+       recyclingArrayList.add(things);
+       Recycling destinations = new Recycling("2", "destinations",R.drawable.ic_baseline_insert_photo_24, "5");
+       recyclingArrayList.add(destinations);
+       Recycling music = new Recycling("3", "music",R.drawable.ic_baseline_insert_photo_24, "5");
+       recyclingArrayList.add(music);
+       Recycling drawings = new Recycling("4", "drawings",R.drawable.ic_baseline_insert_photo_24, "5");
+       recyclingArrayList.add(drawings);
+       Recycling moives = new Recycling("5", "moives",R.drawable.ic_baseline_insert_photo_24, "5");
+       recyclingArrayList.add(moives);
+       Recycling games = new Recycling("6", "games",R.drawable.ic_baseline_insert_photo_24, "5");
+       recyclingArrayList.add(games);
+       Recycling clothes = new Recycling("7", "clothes",R.drawable.ic_baseline_insert_photo_24, "5");
+       recyclingArrayList.add(clothes);
+   }
+   private void setUpRecycler() {
+       recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
+       RecycleAdapter recycleAdapter = new RecycleAdapter(recyclingArrayList);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(recycleAdapter);
-    }
+       RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
+       recyclerView.setLayoutManager(layoutManager);
+       recyclerView.setAdapter(recycleAdapter);
+   }
 
     @Nullable
     @Override
@@ -120,6 +128,8 @@ public class HomeFragment extends Fragment {
         button = v.findViewById(R.id.btnCreateCategory_);
         editText = v.findViewById(R.id.et_CategoryName_);
         goalText = v.findViewById(R.id.etGoalNumItems2);
+        goalAmountText = v.findViewById(R.id.tvCategoryGoalAmount2);
+
 
         button.setOnClickListener(new  View.OnClickListener() {
             @Override
@@ -148,8 +158,8 @@ public class HomeFragment extends Fragment {
                 CreateCategoryFragment createCategoryFragment = new CreateCategoryFragment();
                 createCategoryFragment.setArguments(bundle);
                 Singleton.getInstance().setTestVar2(editText.getText().toString());
-                Singleton.getInstance().setCategories(items);
-                Singleton.getInstance().Goals.add(R.id.etGoalNumItems2);
+                Singleton.getInstance().setCategoryNames(items);
+
 
                 //getParentFragmentManager().beginTransaction().replace(R.id.fragment_container,createCategoryFragment).addToBackStack("CreateCategoryFragment").commit();
             }
@@ -162,9 +172,9 @@ public class HomeFragment extends Fragment {
 
         //Log.i(TAG, " Is this empty: " + String.valueOf(Singleton.getInstance().Categories.isEmpty()));
 
-        if(Singleton.getInstance().Categories.isEmpty() == false && Singleton.getInstance().Categories.size() != 0)
+        if(Singleton.getInstance().categoryNames.isEmpty() == false && Singleton.getInstance().categoryNames.size() != 0)
         {
-            List<String> test = Singleton.getInstance().getCategories();
+            List<String> test = Singleton.getInstance().getCategoryNames();
             //Log.i(TAG, "I'm in!");
             //Log.i(TAG, Singleton.getInstance().Categories.get(0));
             //Log.i(TAG, Singleton.getInstance().Categories.get(0));
@@ -174,8 +184,28 @@ public class HomeFragment extends Fragment {
                 repopluteList(v,s);
 
             }
+            //ShowCreateCategoryUI();
+            //HideItemListUI();
         }
+
+        setUpRecycler();
+        initialiseList();
+        ShowCreateCategoryUI();
+        HideItemListUI();
+
         return v;
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.nav_AddItem||item.getItemId()==R.id.nav_search)
+        {
+            ShowCreateCategoryUI();
+            HideItemListUI();
+        };
+        return super.onContextItemSelected(item);
     }
 
     private void setUpListViewListner() {
@@ -184,14 +214,28 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Context context = getContext();
-                Toast.makeText(context,"Item Removed", Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Opening Category List", Toast.LENGTH_LONG).show();
 
-                items.remove(position);
-                itemsadapter.notifyDataSetChanged();
+                //MainActivity mainActivity  = new MainActivity();
+                //Log.i(TAG, "Position: " + position);
+                //Log.i(TAG, "Position: - CATEGORY NAME: " + Singleton.getInstance().categoryNames.get(position));
+                //Log.i(TAG, "CONTAINS KEY? -: " + Singleton.getInstance().Catagories.containsKey(Singleton.getInstance().categoryNames.get(position)));
+                //Log.i(TAG, "CONTAINS object relating to above key ^ -: " + Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(position)));
+                //mainActivity.setTestRunnable(Singleton.getInstance().categoryNames.get(position), Singleton.getInstance().Goals.get(position));
+                ShowItemListUI();
+                setUpRecycler();
+                initialiseList();
+                HideCreateCategoryUI();
+
+
+
+                //items.remove(position);
+                //itemsadapter.notifyDataSetChanged();
                 return true;
             }
         });
     }
+
 
     private void additem(View v) {
         String itemText = editText.getText().toString();
@@ -199,8 +243,11 @@ public class HomeFragment extends Fragment {
 
         if(!(itemText.equals(""))){
             itemsadapter.add(itemText);
-            Singleton.getInstance().Categories.add(itemText);
-            Log.i(TAG, Singleton.getInstance().Categories.get(Singleton.getInstance().Categories.size()-1));
+            Singleton.getInstance().categoryNames.add(itemText);
+
+            Singleton.getInstance().Catagories.put(itemText,new ArrayList<Item>());
+
+            Log.i(TAG, Singleton.getInstance().categoryNames.get(Singleton.getInstance().categoryNames.size()-1));
             Singleton.getInstance().Goals.add(goalAmount);
             editText.setText("");
         }
@@ -223,5 +270,30 @@ public class HomeFragment extends Fragment {
         }
 
     }
+
+    private void HideCreateCategoryUI(){
+        button.setVisibility(View.INVISIBLE);
+        editText.setVisibility(View.INVISIBLE);
+        goalText.setVisibility(View.INVISIBLE);
+        listView.setVisibility(View.INVISIBLE);
+        goalAmountText.setVisibility(View.INVISIBLE);
+    }
+
+    private void ShowCreateCategoryUI(){
+        button.setVisibility(View.VISIBLE);
+        editText.setVisibility(View.VISIBLE);
+        goalText.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.VISIBLE);
+        goalAmountText.setVisibility(View.VISIBLE);
+    }
+
+    private void HideItemListUI(){
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+    private void ShowItemListUI(){
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+
 
 }

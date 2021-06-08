@@ -1,24 +1,16 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 public class Singleton {
     private static Singleton INSTANCE = null;
 
     // other instance variables can be here
 
-    public ArrayList<String> Categories = new ArrayList<String>();
+    public ArrayList<String> categoryNames = new ArrayList<String>();
     public ArrayList<Integer> Goals = new ArrayList<>();
-    public Hashtable<String,Item> CatagoryItems = new Hashtable<>();
+    public Hashtable<String,ArrayList<Item>> Catagories = new Hashtable<>();
 
     private Singleton() {};
 
@@ -39,13 +31,11 @@ public class Singleton {
         this.testVar2 = testVar2;
     }
 
-    public ArrayList<String> getCategories() {
-        return Categories;
+    public ArrayList<String> getCategoryNames() {
+        return categoryNames;
     }
 
-    public void setCategories(ArrayList<String> categories) {
-        Categories = categories;
-    }
+    public void setCategoryNames(ArrayList<String> categoryNames) { this.categoryNames = categoryNames;  }
 
 
     public ArrayList<Integer> getGoals() {
@@ -56,13 +46,11 @@ public class Singleton {
         Goals = goals;
     }
 
-    public Hashtable<String, Item> getCatagoryItems() {
-        return CatagoryItems;
+    public Hashtable<String, ArrayList<Item>> getCatagories() {
+        return Catagories;
     }
 
-    public void setCatagoryItems(Hashtable<String, Item> catagoryItems) {
-        CatagoryItems = catagoryItems;
-    }
+    public void setCatagories(Hashtable<String, ArrayList<Item>> catagories) { Catagories = catagories;  }
 }
 
 

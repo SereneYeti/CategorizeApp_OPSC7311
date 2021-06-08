@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,9 +21,13 @@ import android.widget.ImageView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     public String testVar;
+    Runnable testRunnable;
+    Handler testHandler = new Handler();
 
 
 
@@ -70,4 +76,45 @@ public class MainActivity extends AppCompatActivity {
                             return true;
                         }
             };
+
+//    public void OpenItemsListFragment(String key, int goal)
+//    {
+//        try {
+//            Fragment selectedFragment = null;
+//
+//            //Log.i(TAG, "I'm in!");
+//            //Log.i(TAG, "SIZE: " + Singleton.getInstance().Catagories.size());
+//            //Log.i(TAG, "KEY: " + key);
+//
+//            //Log.i(TAG, String.valueOf(Singleton.getInstance().Catagories.containsKey(key)));
+//            if(Singleton.getInstance().Catagories.containsKey(key))
+//            {
+//                selectedFragment = new HandleItemsList();
+//
+//                //selectedFragment;
+//
+//                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).setPrimaryNavigationFragment(this.getSupportFragmentManager().getPrimaryNavigationFragment()).commit();
+//
+//                //setContentView(R.layout.activity_items_list);
+
+//           }
+
+//       }
+//       catch (Exception e)
+//       {
+//           Log.e(TAG, "Error: " + e);
+//           e.printStackTrace();
+//       }
+//   }
+
+//   public void setTestRunnable(String key, int goal)
+//   {
+//       testRunnable = new Runnable() {
+//           @Override
+//           public void run() {
+//               OpenItemsListFragment(key, goal);
+//           }
+//       };
+//       new Thread(testRunnable).start();
+//   }
 }
