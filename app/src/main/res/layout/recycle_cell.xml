@@ -12,14 +12,16 @@
         android:padding="10dp"
         android:scaleType="fitStart"
         android:src="@drawable/ic_baseline_insert_photo_24"/>
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
         android:id="@+id/recycleCellText"
-        android:gravity="center_vertical"
-        android:layout_centerHorizontal="true"
+        android:layout_width="254dp"
+        android:layout_height="50dp"
         android:layout_below="@id/recycleCellImage"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
         android:text="Place holder"
-        android:textSize="30sp"/>
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
 </RelativeLayout>

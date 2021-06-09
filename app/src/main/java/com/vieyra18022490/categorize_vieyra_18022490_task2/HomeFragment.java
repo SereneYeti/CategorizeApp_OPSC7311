@@ -94,24 +94,31 @@ public class HomeFragment extends Fragment {
 
 
 
-   private void initialiseList() {
+   private void initialiseList(String CategoryName, int goalAmount) {
+        ArrayList<Item> tempItemsList = Singleton.getInstance().Catagories.get(CategoryName);
+       for (Item item: tempItemsList
+            ) {
+           Recycling temp = new Recycling(String.valueOf(item.itemNum),item.Name,R.drawable.ic_baseline_insert_photo_24, String.valueOf(goalAmount), item.Date);
+           recyclingArrayList.add(temp);
 
-       Recycling unknown = new Recycling("0", "Unknown",R.drawable.ic_baseline_insert_photo_24, "2");
-       recyclingArrayList.add(unknown);
-       Recycling things = new Recycling("1", "things",R.drawable.ic_baseline_insert_photo_24, "3");
-       recyclingArrayList.add(things);
-       Recycling destinations = new Recycling("2", "destinations",R.drawable.ic_baseline_insert_photo_24, "5");
-       recyclingArrayList.add(destinations);
-       Recycling music = new Recycling("3", "music",R.drawable.ic_baseline_insert_photo_24, "5");
-       recyclingArrayList.add(music);
-       Recycling drawings = new Recycling("4", "drawings",R.drawable.ic_baseline_insert_photo_24, "5");
-       recyclingArrayList.add(drawings);
-       Recycling moives = new Recycling("5", "moives",R.drawable.ic_baseline_insert_photo_24, "5");
-       recyclingArrayList.add(moives);
-       Recycling games = new Recycling("6", "games",R.drawable.ic_baseline_insert_photo_24, "5");
-       recyclingArrayList.add(games);
-       Recycling clothes = new Recycling("7", "clothes",R.drawable.ic_baseline_insert_photo_24, "5");
-       recyclingArrayList.add(clothes);
+       }
+
+//      Recycling unknown = new Recycling("0", "Unknown",R.drawable.ic_baseline_insert_photo_24, "2");
+//      recyclingArrayList.add(unknown);
+//      Recycling things = new Recycling("1", "things",R.drawable.ic_baseline_insert_photo_24, "3");
+//      recyclingArrayList.add(things);
+//      Recycling destinations = new Recycling("2", "destinations",R.drawable.ic_baseline_insert_photo_24, "5");
+//      recyclingArrayList.add(destinations);
+//      Recycling music = new Recycling("3", "music",R.drawable.ic_baseline_insert_photo_24, "5");
+//      recyclingArrayList.add(music);
+//      Recycling drawings = new Recycling("4", "drawings",R.drawable.ic_baseline_insert_photo_24, "5");
+//      recyclingArrayList.add(drawings);
+//      Recycling moives = new Recycling("5", "moives",R.drawable.ic_baseline_insert_photo_24, "5");
+//      recyclingArrayList.add(moives);
+//      Recycling games = new Recycling("6", "games",R.drawable.ic_baseline_insert_photo_24, "5");
+//      recyclingArrayList.add(games);
+//      Recycling clothes = new Recycling("7", "clothes",R.drawable.ic_baseline_insert_photo_24, "5");
+//      recyclingArrayList.add(clothes);
    }
    private void setUpRecycler() {
        recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
@@ -193,7 +200,7 @@ public class HomeFragment extends Fragment {
         }
 
         setUpRecycler();
-        initialiseList();
+        //initialiseList();
         ShowCreateCategoryUI();
         HideItemListUI();
 
@@ -232,7 +239,7 @@ public class HomeFragment extends Fragment {
                 tvCategoryGoal_Remaining.setText("Amount left until category goal is reached: " +  String.valueOf(goalRemaining));
                 ShowItemListUI();
                 setUpRecycler();
-                initialiseList();
+                initialiseList(Singleton.getInstance().getCategoryNames().get(position),(Singleton.getInstance().Goals.get(position)));
                 HideCreateCategoryUI();
 
 

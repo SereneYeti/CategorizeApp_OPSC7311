@@ -6,6 +6,7 @@ public class Recycling {
     private String name;
     private int image;
     private String goalAmount;
+    private String DateCreated;
 
     public String getId() {
         return id;
@@ -39,10 +40,11 @@ public class Recycling {
         this.goalAmount = goalAmount;
     }
 
-    public Recycling(String id, String name, int image, String goalAmount) {
+    public Recycling(String id, String name, int image, String goalAmount, String dateCreated) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.goalAmount = goalAmount;
+        this.DateCreated = dateCreated;
     }
 }
