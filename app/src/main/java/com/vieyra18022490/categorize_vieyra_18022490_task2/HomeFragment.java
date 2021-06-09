@@ -35,6 +35,8 @@ public class HomeFragment extends Fragment {
     private EditText editText;
     private EditText goalText;
     private TextView goalAmountText;
+    private TextView tvCategoryName_HomeFrag;
+    private TextView tvCategoryGoal_Remaining;
 
     private ArrayList<String> items;
     private ArrayAdapter itemsadapter;
@@ -129,6 +131,8 @@ public class HomeFragment extends Fragment {
         editText = v.findViewById(R.id.et_CategoryName_);
         goalText = v.findViewById(R.id.etGoalNumItems2);
         goalAmountText = v.findViewById(R.id.tvCategoryGoalAmount2);
+        tvCategoryGoal_Remaining = v.findViewById(R.id.tvCategoryGoal);
+        tvCategoryName_HomeFrag = v.findViewById(R.id.tvCategoryName_HomeFragment);
 
 
         button.setOnClickListener(new  View.OnClickListener() {
@@ -217,11 +221,15 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(context,"Opening Category List", Toast.LENGTH_LONG).show();
 
                 //MainActivity mainActivity  = new MainActivity();
-                //Log.i(TAG, "Position: " + position);
-                //Log.i(TAG, "Position: - CATEGORY NAME: " + Singleton.getInstance().categoryNames.get(position));
+                Log.i(TAG, "Position: " + position);
+                Log.i(TAG, "Position: - CATEGORY NAME: " + Singleton.getInstance().categoryNames.get(position));
                 //Log.i(TAG, "CONTAINS KEY? -: " + Singleton.getInstance().Catagories.containsKey(Singleton.getInstance().categoryNames.get(position)));
                 //Log.i(TAG, "CONTAINS object relating to above key ^ -: " + Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(position)));
                 //mainActivity.setTestRunnable(Singleton.getInstance().categoryNames.get(position), Singleton.getInstance().Goals.get(position));
+                tvCategoryName_HomeFrag.setText("Category Name: " + Singleton.getInstance().getCategoryNames().get(position));
+                int goalRemaining = (Singleton.getInstance().Goals.get(position) - Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(position)).size());
+                Log.i(TAG, "Goal Remaining"+ String.valueOf(goalRemaining));
+                tvCategoryGoal_Remaining.setText("Amount left until category goal is reached: " +  String.valueOf(goalRemaining));
                 ShowItemListUI();
                 setUpRecycler();
                 initialiseList();
@@ -289,9 +297,13 @@ public class HomeFragment extends Fragment {
 
     private void HideItemListUI(){
         recyclerView.setVisibility(View.INVISIBLE);
+        tvCategoryGoal_Remaining.setVisibility(View.INVISIBLE);
+        tvCategoryName_HomeFrag.setVisibility(View.INVISIBLE);
     }
     private void ShowItemListUI(){
         recyclerView.setVisibility(View.VISIBLE);
+        tvCategoryGoal_Remaining.setVisibility(View.VISIBLE);
+        tvCategoryName_HomeFrag.setVisibility(View.VISIBLE);
     }
 
 
