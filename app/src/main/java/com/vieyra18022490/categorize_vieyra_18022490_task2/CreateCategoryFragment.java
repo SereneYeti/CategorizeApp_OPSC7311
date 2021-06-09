@@ -150,7 +150,7 @@ public class CreateCategoryFragment extends Fragment {
                         else
                         {
                             item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,bitmap, tempDate);
-                            Toast.makeText(context,"Item Created!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,"Item Created!", Toast.LENGTH_SHORT).show();
                             Log.i(TAG,"HERE2: " + mSpinner.getSelectedItem().toString());
                             try {
                                 if(Singleton.getInstance().Catagories.containsKey(mSpinner.getSelectedItem().toString())){
@@ -159,7 +159,7 @@ public class CreateCategoryFragment extends Fragment {
                                     item.itemNum = tempItems.size();
                                     tempItems.add(tempItems.size(),item);
                                     Singleton.getInstance().Catagories.replace(mSpinner.getSelectedItem().toString(),tempItems);
-                                    Toast.makeText(context,"Item Saved!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context,"Item Saved!", Toast.LENGTH_SHORT).show();
 
                                 }
                             }
