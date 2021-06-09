@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
         ArrayList<Item> tempItemsList = Singleton.getInstance().Catagories.get(CategoryName);
        for (Item item: tempItemsList
             ) {
-           Recycling temp = new Recycling(String.valueOf(item.itemNum),item.Name,R.drawable.ic_baseline_insert_photo_24, String.valueOf(goalAmount), item.Date);
+           Recycling temp = new Recycling(String.valueOf(item.itemNum),item.Name,item.picture, String.valueOf(goalAmount), item.Date);
            recyclingArrayList.add(temp);
 
        }

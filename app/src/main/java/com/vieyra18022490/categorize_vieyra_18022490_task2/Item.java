@@ -1,5 +1,6 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class Item {
 
     }
 
-    public Item(String key, String name, int itemNum, ImageView picture) {
+    public Item(String key, String name, int itemNum, Bitmap picture) {
         this.key = key;
         Name = name;
         this.itemNum = itemNum;
@@ -24,7 +25,7 @@ public class Item {
         Date = "";
     }
 
-    public Item(String key, String name, int itemNum, ImageView picture, String date) {
+    public Item(String key, String name, int itemNum, Bitmap picture, String date) {
         this.key = key;
         Name = name;
         this.itemNum = itemNum;
@@ -33,7 +34,7 @@ public class Item {
     }
 
     public int itemNum;
-    public ImageView picture;
+    public Bitmap picture;
 
     public String getKey() {
         return key;
@@ -59,11 +60,11 @@ public class Item {
         this.itemNum = itemNum;
     }
 
-    public ImageView getPicture() {
+    public Bitmap getPicture() {
         return picture;
     }
 
-    public void setPicture(ImageView picture) {
+    public void setPicture(Bitmap picture) {
         this.picture = picture;
     }
 

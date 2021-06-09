@@ -39,8 +39,8 @@ public class Login extends AppCompatActivity {
             startActivity(in);
         } else if (stuname.equals("") || stpword.equals("")) {
             Toast.makeText(getBaseContext(), "Enter name and password", Toast.LENGTH_SHORT).show();
-            Intent in = new Intent(Login.this, MainActivity.class);
-            startActivity(in);
+            //Intent in = new Intent(Login.this, MainActivity.class);
+            //startActivity(in);
         } else {
             Toast.makeText(getBaseContext(), "Wrong name and password", Toast.LENGTH_SHORT).show();
 

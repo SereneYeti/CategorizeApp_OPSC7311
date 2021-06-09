@@ -28,8 +28,9 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.recycleImage.setImageResource(recyclingArrayList.get(position).getImage());
+        holder.recycleImage.setImageBitmap(recyclingArrayList.get(position).getImage());
         holder.recycleText.setText(recyclingArrayList.get(position).getName());
+        holder.recycleText2.setText(recyclingArrayList.get(position).getDateCreated());
 
     }
 
@@ -43,11 +44,13 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView recycleImage;
         private TextView recycleText;
+        private TextView recycleText2;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             recycleImage = (ImageView) itemView.findViewById(R.id.recycleCellImage);
             recycleText = (TextView) itemView.findViewById(R.id.recycleCellText);
+            recycleText2 = (TextView) itemView.findViewById(R.id.recycleCellText2);
         }
     }
 }

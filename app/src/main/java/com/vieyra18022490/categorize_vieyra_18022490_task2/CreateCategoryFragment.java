@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class CreateCategoryFragment extends Fragment {
@@ -43,6 +44,7 @@ public class CreateCategoryFragment extends Fragment {
     ImageView iv_CategoryPicture;
     Spinner mSpinner;
     public EditText et_ItemDate;
+    private Bitmap bitmap;
 
     public CreateCategoryFragment() {
         // Required empty public constructor
@@ -123,35 +125,54 @@ public class CreateCategoryFragment extends Fragment {
                     {
                         if(tempDate.contains("dd/mm/yyyy"))
                         {
-                            item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,iv_CategoryPicture);
+                            item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,bitmap);
                             Toast.makeText(context,"Item Created!", Toast.LENGTH_LONG).show();
+                            Log.i(TAG,"HERE1: " + mSpinner.getSelectedItem().toString());
+                            try {
+                                if(Singleton.getInstance().Catagories.containsKey(mSpinner.getSelectedItem().toString())){
+                                    ArrayList<Item> tempItems = Singleton.getInstance().Catagories.get(mSpinner.getSelectedItem().toString());
+                                    Log.i(TAG,"HERE3: " + mSpinner.getSelectedItem().toString());
+                                    item.itemNum = tempItems.size();
+                                    tempItems.add(tempItems.size(),item);
+                                    Singleton.getInstance().Catagories.replace(mSpinner.getSelectedItem().toString(),tempItems);
+                                    Toast.makeText(context,"Item Saved!", Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(TAG, e.toString());
+                            }
                             et_ItemName.setText("Item Name");
                             mSpinner.setSelection(0);
                             iv_CategoryPicture.setImageBitmap(null);
                         }
                         else
                         {
-                            item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,iv_CategoryPicture, tempDate);
+                            item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,bitmap, tempDate);
                             Toast.makeText(context,"Item Created!", Toast.LENGTH_LONG).show();
+                            Log.i(TAG,"HERE2: " + mSpinner.getSelectedItem().toString());
+                            try {
+                                if(Singleton.getInstance().Catagories.containsKey(mSpinner.getSelectedItem().toString())){
+                                    ArrayList<Item> tempItems = Singleton.getInstance().Catagories.get(mSpinner.getSelectedItem().toString());
+                                    Log.i(TAG,"HERE3: " + mSpinner.getSelectedItem().toString());
+                                    item.itemNum = tempItems.size();
+                                    tempItems.add(tempItems.size(),item);
+                                    Singleton.getInstance().Catagories.replace(mSpinner.getSelectedItem().toString(),tempItems);
+                                    Toast.makeText(context,"Item Saved!", Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(TAG, e.toString());
+                            }
                             et_ItemName.setText("Item Name");
                             mSpinner.setSelection(0);
                             iv_CategoryPicture.setImageBitmap(null);
                             et_ItemDate.setText("dd/mm/yyyy");
                         }
-                        try {
-                            if(Singleton.getInstance().Catagories.containsKey(mSpinner.getSelectedItem().toString())){
-                                ArrayList<Item> tempItems = Singleton.getInstance().Catagories.get(mSpinner.getSelectedItem().toString());
-                                item.itemNum = tempItems.size();
-                                tempItems.add(tempItems.size(),item);
-                                Singleton.getInstance().Catagories.replace(mSpinner.getSelectedItem().toString(),tempItems);
-                                Toast.makeText(context,"Item Saved!", Toast.LENGTH_LONG).show();
 
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e(TAG, e.toString());
-                        }
 
                     }
 
@@ -202,7 +223,7 @@ public class CreateCategoryFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode != 0)
         {
-            Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+            bitmap = (Bitmap)data.getExtras().get("data");
             iv_CategoryPicture.setImageBitmap(bitmap);
         }
         //super.onActivityResult(requestCode, resultCode, data);
