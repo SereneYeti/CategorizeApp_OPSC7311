@@ -19,11 +19,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
+
     private static final String TAG = "MainActivity";
     public String testVar;
     Runnable testRunnable;
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         bottonNav.setOnNavigationItemSelectedListener(navListner);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        FirebaseApp.initializeApp(this);
     }
 
 
