@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_search:
                             selectedFragment = new SearchFragment();
                             break;
+                        case R.id.nav_showGraph:
+                            selectedFragment = new GraphFragment();
+                            break;
                     }
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
                             return true;
