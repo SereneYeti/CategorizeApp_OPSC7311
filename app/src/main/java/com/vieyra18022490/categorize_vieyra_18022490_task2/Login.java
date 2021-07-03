@@ -190,9 +190,13 @@ public class Login extends AppCompatActivity {
 
         String stuname = uname.getText().toString(); //storing the varibles
         String stpword = upass.getText().toString();
-
+        //NOTE: COMMENT out setting the calues manualy below to prevnt atuo sign in
+        stuname = "james@vieyra.co.za";
+        stpword = "TestPassword1";
         //use if statement to compare the strings the user has entered
 
-      signIn(stuname,stpword);
+        signIn(stuname,stpword);
+
+
     }
 }
