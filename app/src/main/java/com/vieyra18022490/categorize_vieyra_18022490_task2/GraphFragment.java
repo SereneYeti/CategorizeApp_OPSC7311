@@ -20,35 +20,47 @@ public class GraphFragment extends Fragment {
 
     View v;
     BarChart barChart;
+    ArrayList<BarEntry> barEntries;
+    ArrayList<String> theHeadings;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_mapgraph,container,false);
 
-        barChart = (BarChart)v.findViewById((R.id.barGraph));
-        //Essentially the y axis data
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(44f,0));
-        barEntries.add(new BarEntry(56f,1));
-        barEntries.add(new BarEntry(65f,2));
+        HandleBarGraph();
+
+
+        return v;
+    }
+
+    public void DoBarEntries(float data1, float data2){
+
+        barEntries.add(new BarEntry(data1,0));
+        barEntries.add(new BarEntry(data2,1));
+        //barEntries.add(new BarEntry(65f,2));
 
         //X Headings
-        ArrayList<String> theDates = new ArrayList<>();;
-        theDates.add("April");
-        theDates.add("May");
-        theDates.add("June");
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Dates");
+        theHeadings.add("Items in Category");
+        theHeadings.add("Goal");
+        //theDates.add("June");
+    }
 
-        BarData theData = new BarData(theDates,barDataSet);
+    public void HandleBarGraph(){
+        barChart = (BarChart)v.findViewById((R.id.barGraph));
+        //Essentially the y axis data
+        barEntries = new ArrayList<>();
+        theHeadings = new ArrayList<>();;
+
+        DoBarEntries(2f,10f);;
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Type");
+        BarData theData = new BarData(theHeadings,barDataSet);
         barChart.setData(theData);
 
         barChart.setTouchEnabled(true);
         barChart.setDragEnabled(true);
         barChart.setScaleEnabled(true);
-
-        return v;
     }
 
 
