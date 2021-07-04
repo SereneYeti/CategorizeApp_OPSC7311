@@ -1,9 +1,13 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +22,10 @@ import java.util.ArrayList;
 
 public class GraphFragment extends Fragment {
 
+    private static final String TAG = "GraphFragment";
     View v;
     BarChart barChart;
+    Spinner chooseCategory;
     ArrayList<BarEntry> barEntries;
     ArrayList<String> theHeadings;
 
@@ -27,8 +33,24 @@ public class GraphFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_mapgraph,container,false);
+        chooseCategory = (Spinner)v.findViewById(R.id.spChooseGraphGoal);
 
+
+        SetUpSpinner();
         HandleBarGraph();
+
+        chooseCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                HandleBarGraph();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
 
         return v;
@@ -53,14 +75,52 @@ public class GraphFragment extends Fragment {
         barEntries = new ArrayList<>();
         theHeadings = new ArrayList<>();;
 
-        DoBarEntries(2f,10f);;
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Type");
-        BarData theData = new BarData(theHeadings,barDataSet);
-        barChart.setData(theData);
+        String item = chooseCategory.getSelectedItem().toString();
+        Log.i(TAG,item + "on item selected");
+        if(Singleton.getInstance().getCatagories().containsKey(item))
+        {
+            ArrayList<Item> tempItem = Singleton.getInstance().getCatagories().get(item);
+            if(tempItem.size() < 0) {
+                DoBarEntries(0, Singleton.getInstance().getGoals().get(chooseCategory.getSelectedItemPosition()));
+
+            }
+            else{
+                DoBarEntries(tempItem.size(), Singleton.getInstance().getGoals().get(chooseCategory.getSelectedItemPosition()));
+            }
+            Log.i(TAG,(tempItem.size()) + "on item selected");
+            //Log.i(TAG,(tempItem.size()+1) + "on item selected");
+            BarDataSet barDataSet = new BarDataSet(barEntries, "Type");
+            BarData theData = new BarData(theHeadings,barDataSet);
+            barChart.setData(theData);
+            barChart.notifyDataSetChanged();
+        }
+
 
         barChart.setTouchEnabled(true);
         barChart.setDragEnabled(true);
         barChart.setScaleEnabled(true);
+    }
+
+    public void SetUpSpinner(){
+        ArrayList<String> options=new ArrayList<String>();
+        if(Singleton.getInstance() != null)
+        {
+            options = new ArrayList<String>(Singleton.getInstance().getCategoryNames());
+            //ArrayList<String> data = savedInstanceState.getStringArrayList("itemsArrayList");
+            //options = data;
+        }
+        else
+        {
+            options = new ArrayList<String>(new ArrayList<>());
+        }
+        //options = new ArrayList<>(Singleton.getInstance().getCategories());
+
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,options);
+        adapter.notifyDataSetChanged();
+        chooseCategory.setAdapter(adapter);
+
     }
 
 
