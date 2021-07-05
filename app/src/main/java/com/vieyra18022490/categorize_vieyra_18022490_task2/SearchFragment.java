@@ -138,16 +138,16 @@ public class SearchFragment extends Fragment {
 
         for(int i = 0; i < Singleton.getInstance().getCategoryNames().size(); i++){
             DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items");
-            for(int j =0; j < Singleton.getInstance().categoryNames.get(i).length(); j ++){
+            for(int j =0; j < Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).size(); j ++){
                 Item item = Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).get(j);
                 String key = item.key;
                 String name = item.getName();
                 String date = item.getDate();
                 myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Key");
                 myRef.setValue(key);
-                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Name");
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Name");
                 myRef.setValue(name);
-                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Date");
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Date");
                 myRef.setValue(date);
             }
 

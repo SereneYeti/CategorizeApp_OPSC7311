@@ -125,7 +125,9 @@ public class CreateCategoryFragment extends Fragment {
                     {
                         if(tempDate.contains("dd/mm/yyyy"))
                         {
-                            item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,bitmap);
+                            String x = String.valueOf(Singleton.getInstance().Catagories.get(mSpinner.getSelectedItem().toString()).size());
+
+                            item = new Item("Item" + x,et_ItemName.getText().toString(),0,bitmap);
                             Toast.makeText(context,"Item Created!", Toast.LENGTH_LONG).show();
                             Log.i(TAG,"HERE1: " + mSpinner.getSelectedItem().toString());
                             try {
@@ -149,7 +151,8 @@ public class CreateCategoryFragment extends Fragment {
                         }
                         else
                         {
-                            item = new Item(mSpinner.getSelectedItem().toString(),et_ItemName.getText().toString(),0,bitmap, tempDate);
+                            String x = String.valueOf(Singleton.getInstance().Catagories.get(mSpinner.getSelectedItem().toString()).size());
+                            item = new Item("Item" + x,et_ItemName.getText().toString(),0,bitmap, tempDate);
                             Toast.makeText(context,"Item Created!", Toast.LENGTH_SHORT).show();
                             Log.i(TAG,"HERE2: " + mSpinner.getSelectedItem().toString());
                             try {
