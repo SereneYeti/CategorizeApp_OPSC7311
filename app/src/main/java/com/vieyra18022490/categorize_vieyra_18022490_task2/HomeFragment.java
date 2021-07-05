@@ -150,7 +150,7 @@ public class HomeFragment extends Fragment {
 
                 AddItemsFragment itemsFragment = new AddItemsFragment();
                 itemsFragment.setArguments(bundle);
-                Singleton.getInstance().setTestVar2(editText.getText().toString());
+                //Singleton.getInstance().setTestVar2(editText.getText().toString());
 
                 getParentFragmentManager().beginTransaction().replace(R.id.fragment_container,itemsFragment).addToBackStack("itemsFragment").commit();
             }
@@ -168,8 +168,8 @@ public class HomeFragment extends Fragment {
 
                 CreateCategoryFragment createCategoryFragment = new CreateCategoryFragment();
                 createCategoryFragment.setArguments(bundle);
-                Singleton.getInstance().setTestVar2(editText.getText().toString());
-                Singleton.getInstance().setCategoryNames(items);
+                //Singleton.getInstance().setTestVar2(editText.getText().toString());
+                //Singleton.getInstance().setCategoryNames(items);
 
 
                 //getParentFragmentManager().beginTransaction().replace(R.id.fragment_container,createCategoryFragment).addToBackStack("CreateCategoryFragment").commit();

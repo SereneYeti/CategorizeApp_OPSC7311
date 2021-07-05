@@ -17,10 +17,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -57,32 +63,73 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListner = new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+    private BottomNavigationView.OnNavigationItemSelectedListener navListner = item -> {
+        Fragment selectedFragment = null;
 
-                    switch (item.getItemId()) {
-                        case R.id.nav_home:
-                            selectedFragment = new HomeFragment();
-                            break;
-                        //case R.id.nav_add:
-                            //selectedFragment = new AddItemsFragment();
-                            //break;
-                        case R.id.nav_AddItem:
-                            selectedFragment = new CreateCategoryFragment();
-                            break;
-                        case R.id.nav_search:
-                            selectedFragment = new SearchFragment();
-                            break;
-                        case R.id.nav_showGraph:
-                            selectedFragment = new GraphFragment();
-                            break;
-                    }
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
-                            return true;
-                        }
+        switch (item.getItemId()) {
+            case R.id.nav_home:
+                selectedFragment = new HomeFragment();
+                break;
+            //case R.id.nav_add:
+                //selectedFragment = new AddItemsFragment();
+                //break;
+            case R.id.nav_AddItem:
+                selectedFragment = new CreateCategoryFragment();
+                break;
+            case R.id.nav_search:
+                selectedFragment = new SearchFragment();
+                break;
+            case R.id.nav_showGraph:
+                selectedFragment = new GraphFragment();
+                break;
+        }
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                return true;
             };
+    public static FirebaseDatabase getFirebaseDatabase() {
+        return FirebaseDatabase.getInstance("https://categorize-app-poe-prototype-default-rtdb.europe-west1.firebasedatabase.app/");
+    }
+    public static void downloadList(){
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+        DatabaseReference myRef = database.getReference().child("Category Name");
+        ArrayList<String> testGoals = new ArrayList<>();
+        ArrayList<String> testNames = new ArrayList<>();
+
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    testGoals.clear();
+                    testNames.clear();
+                    for(DataSnapshot dss: snapshot.getChildren())
+                    {
+                        Log.i(TAG, "onClick: " + dss.getValue());
+                        String catName = dss.getValue().toString();
+                        testNames.add(catName);
+                        for(DataSnapshot s : dss.getChildren()){
+
+                            String goals = dss.child(s.getKey()).getValue().toString();
+                            testGoals.add(goals);
+                        }
+
+                    }
+
+
+                    for(int i = 0; i < testGoals.size();i++){
+                        Singleton.getInstance().stringBuilder.append("NAME: " +testNames.get(i)+ ",");
+                        Singleton.getInstance().stringBuilder.append("Goal: " +testGoals.get(i)+ ",");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 //    public void OpenItemsListFragment(String key, int goal)
 //    {

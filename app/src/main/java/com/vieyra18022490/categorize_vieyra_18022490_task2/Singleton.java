@@ -11,6 +11,7 @@ public class Singleton {
     public ArrayList<String> categoryNames = new ArrayList<String>();
     public ArrayList<Integer> Goals = new ArrayList<>();
     public Hashtable<String,ArrayList<Item>> Catagories = new Hashtable<>();
+    StringBuilder stringBuilder = new StringBuilder();
 
     private Singleton() {};
 

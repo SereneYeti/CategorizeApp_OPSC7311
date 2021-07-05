@@ -7,13 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -28,6 +36,7 @@ public class SearchFragment extends Fragment {
     View v;
     private TextView tv_RecieveText3;
     Button btnPublish_;
+    Button btnTest;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -69,7 +78,7 @@ public class SearchFragment extends Fragment {
         {
             tv_RecieveText3.setText(Singleton.getInstance().getTestVar2());
         }
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://categorize-app-poe-prototype-default-rtdb.europe-west1.firebasedatabase.app/");
+
         btnPublish_ = v.findViewById(R.id.btnPublish);
 
         Log.i(TAG, "HELLO! ");
@@ -77,12 +86,84 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                DatabaseReference myRef = database.getReference("message");
-                myRef.setValue("Goodbye, Cruel World!");
-                Log.i(TAG, "onClick: ");
+                //SetDatabaseValue("Category Name", "Named Category");
+                //SetDatabaseValue("Goal", "10");
+                //SetDatabaseValue("message", " Test message, from cruel cruel reality!");
+                //Log.i(TAG, "onClick: ");
+                uploadList();
+            }
+        });
+
+        btnTest = v.findViewById(R.id.btnDisplay);
+
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.downloadList();
+                Toast.makeText(v.getContext(),Singleton.getInstance().stringBuilder.toString(),Toast.LENGTH_LONG).show();
+                Singleton.getInstance().stringBuilder.replace(0, Singleton.getInstance().stringBuilder.length(),"");
             }
         });
 
         return v;
     }
+
+    public void uploadList(){
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+        DatabaseReference myRef = database.getReference().child("Category Name");
+        //Log.i(TAG, "onClick: " + myRef.getKey();
+        myRef.setValue(Singleton.getInstance().getCategoryNames()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(v.getContext(),"List Uploaded Successfully!",Toast.LENGTH_LONG).show();
+                    addGoals();
+                    addItems();
+                }
+            }
+        });
+    }
+
+    public void addGoals(){
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+
+         for(int i = 0; i < Singleton.getInstance().getCategoryNames().size(); i++){
+            DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Goal");
+            myRef.setValue(Singleton.getInstance().Goals.get(i));
+        }
+    }
+
+    public void addItems(){
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+
+        for(int i = 0; i < Singleton.getInstance().getCategoryNames().size(); i++){
+            DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items");
+            for(int j =0; j < Singleton.getInstance().categoryNames.get(i).length(); j ++){
+                Item item = Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).get(j);
+                String key = item.key;
+                String name = item.getName();
+                String date = item.getDate();
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Key");
+                myRef.setValue(key);
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Name");
+                myRef.setValue(name);
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Date");
+                myRef.setValue(date);
+            }
+
+        }
+    }
+
+
+
+
+
+    private void SetDatabaseValue(String path, String value) {
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+        DatabaseReference myRef = database.getReference(path);
+        //Log.i(TAG, "onClick: " + myRef.getKey());
+        myRef.setValue(value);
+    }
+
+
 }
