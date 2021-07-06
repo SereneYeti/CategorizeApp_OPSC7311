@@ -1,6 +1,10 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
+import android.content.ContentResolver;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,19 +12,28 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.webkit.MimeTypeMap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContentResolverCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
@@ -37,6 +50,8 @@ public class SearchFragment extends Fragment {
     private TextView tv_RecieveText3;
     Button btnPublish_;
     Button btnTest;
+
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -90,7 +105,6 @@ public class SearchFragment extends Fragment {
                 //SetDatabaseValue("Goal", "10");
                 //SetDatabaseValue("message", " Test message, from cruel cruel reality!");
                 //Log.i(TAG, "onClick: ");
-                uploadList();
             }
         });
 
@@ -99,73 +113,15 @@ public class SearchFragment extends Fragment {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.downloadList();
-                Toast.makeText(v.getContext(),Singleton.getInstance().stringBuilder.toString(),Toast.LENGTH_LONG).show();
-                Singleton.getInstance().stringBuilder.replace(0, Singleton.getInstance().stringBuilder.length(),"");
+
             }
         });
 
         return v;
     }
 
-    public void uploadList(){
-        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
-        DatabaseReference myRef = database.getReference().child("Category Name");
-        myRef.removeValue();
-
-        //Log.i(TAG, "onClick: " + myRef.getKey();
-        myRef.setValue(Singleton.getInstance().getCategoryNames()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(v.getContext(),"List Uploaded Successfully!",Toast.LENGTH_LONG).show();
-                    addGoals();
-                    addItems();
-                }
-            }
-        });
-    }
-
-    public void addGoals(){
-        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
-
-         for(int i = 0; i < Singleton.getInstance().getCategoryNames().size(); i++){
-            DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Goal");
-            myRef.setValue(Singleton.getInstance().Goals.get(i));
-        }
-    }
-
-    public void addItems(){
-        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
-
-        for(int i = 0; i < Singleton.getInstance().Catagories.size(); i++){
-            DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items");
-            for(int j =0; j < Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).size(); j ++){
-                Item item = Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).get(j);
-                String key = item.key;
-                String name = item.getName();
-                String date = item.getDate();
-                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Key");
-                myRef.setValue(key);
-                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Name");
-                myRef.setValue(name);
-                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Date");
-                myRef.setValue(date);
-            }
-
-        }
-    }
 
 
-
-
-
-    private void SetDatabaseValue(String path, String value) {
-        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
-        DatabaseReference myRef = database.getReference(path);
-        //Log.i(TAG, "onClick: " + myRef.getKey());
-        myRef.setValue(value);
-    }
 
 
 }

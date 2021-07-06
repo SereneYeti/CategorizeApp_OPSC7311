@@ -1,8 +1,13 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.view.View;
 import android.widget.ImageView;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Item {
@@ -10,6 +15,8 @@ public class Item {
     public String key;
     public String Name;
     public String Date;
+    public int itemNum;
+    public Bitmap picture;
 
 
 
@@ -46,8 +53,7 @@ public class Item {
         Date = date;
     }
 
-    public int itemNum;
-    public Bitmap picture;
+
 
     public String getKey() {
         return key;

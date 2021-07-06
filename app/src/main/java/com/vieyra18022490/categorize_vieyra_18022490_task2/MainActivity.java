@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     Runnable testRunnable;
     Handler testHandler = new Handler();
 
-
-
     public String getTestVar() {
         return testVar;
     }
@@ -58,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         BottomNavigationView bottonNav = findViewById(R.id.bottom_navigation);
         bottonNav.setOnNavigationItemSelectedListener(navListner);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-        FirebaseApp.initializeApp(this);
-        downloadList();
+
     }
 
 
@@ -100,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> testGoals = new ArrayList<>();
         ArrayList<String> testNames = new ArrayList<>();
         Hashtable<String,ArrayList<Item>> tempDict = new Hashtable<>();
-
 
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -160,7 +158,9 @@ public class MainActivity extends AppCompatActivity {
                                             {
                                                 name = dss3.child("Name").getValue().toString();
                                                 date = dss3.child("Date").getValue().toString();
+                                                //String uri = dss3.child("ImageUri").getValue().toString();
                                                 //testItems.add(new Item(key,name,date));
+
                                                 tempDict.get(testNames.get(dCnt)).add(new Item(key,name,date));
                                             }
                                         }

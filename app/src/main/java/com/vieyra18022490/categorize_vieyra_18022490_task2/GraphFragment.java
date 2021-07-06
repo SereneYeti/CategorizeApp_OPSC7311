@@ -17,6 +17,9 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,7 @@ public class GraphFragment extends Fragment {
     Spinner chooseCategory;
     ArrayList<BarEntry> barEntries;
     ArrayList<String> theHeadings;
+
 
     @Nullable
     @Override

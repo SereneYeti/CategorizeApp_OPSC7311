@@ -1,8 +1,10 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +25,18 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -45,6 +60,8 @@ public class CreateCategoryFragment extends Fragment {
     Spinner mSpinner;
     public EditText et_ItemDate;
     private Bitmap bitmap;
+    private DatabaseReference root_Images = MainActivity.getFirebaseDatabase().getReference();
+    private StorageReference reference = FirebaseStorage.getInstance("gs://categorize-app-poe-prototype.appspot.com").getReference();
 
     public CreateCategoryFragment() {
         // Required empty public constructor
@@ -148,6 +165,7 @@ public class CreateCategoryFragment extends Fragment {
                             et_ItemName.setText("Item Name");
                             mSpinner.setSelection(0);
                             iv_CategoryPicture.setImageBitmap(null);
+                            uploadList();
                         }
                         else
                         {
@@ -174,6 +192,7 @@ public class CreateCategoryFragment extends Fragment {
                             mSpinner.setSelection(0);
                             iv_CategoryPicture.setImageBitmap(null);
                             et_ItemDate.setText("dd/mm/yyyy");
+                            uploadList();
                         }
 
 
@@ -230,5 +249,103 @@ public class CreateCategoryFragment extends Fragment {
             iv_CategoryPicture.setImageBitmap(bitmap);
         }
         //super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void uploadList(){
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+        DatabaseReference myRef = database.getReference().child("Category Name");
+        myRef.removeValue();
+
+        //Log.i(TAG, "onClick: " + myRef.getKey();
+        myRef.setValue(Singleton.getInstance().getCategoryNames()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(v.getContext(),"List Uploaded Successfully!",Toast.LENGTH_LONG).show();
+                    addGoals();
+                    addItems();
+                }
+            }
+        });
+    }
+
+    public void addGoals(){
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+
+        for(int i = 0; i < Singleton.getInstance().getCategoryNames().size(); i++){
+            DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Goal");
+            myRef.setValue(Singleton.getInstance().Goals.get(i));
+        }
+    }
+
+    public void addItems(){
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+
+        for(int i = 0; i < Singleton.getInstance().Catagories.size(); i++){
+            DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items");
+            for(int j =0; j < Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).size(); j ++){
+                Item item = Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).get(j);
+                String key = item.key;
+                String name = item.getName();
+                String date = item.getDate();
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Key");
+                myRef.setValue(key);
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Name");
+                myRef.setValue(name);
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Date");
+                myRef.setValue(date);
+
+            }
+
+        }
+    }
+
+    private void UploadUriToFirebase(Uri uri) {
+        StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
+        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Toast.makeText(v.getContext(),"Upload Success",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(v.getContext(),"Upload Failed",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private String getFileExtension(Uri mUri) {
+        ContentResolver cr = v.getContext().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(mUri));
+    }
+
+    public Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(v.getContext().getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+
+
+    private void SetDatabaseValue(String path, String value) {
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+        DatabaseReference myRef = database.getReference(path);
+        //Log.i(TAG, "onClick: " + myRef.getKey());
+        myRef.setValue(value);
     }
 }
