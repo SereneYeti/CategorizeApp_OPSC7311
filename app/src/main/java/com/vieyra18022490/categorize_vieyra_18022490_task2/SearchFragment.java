@@ -111,6 +111,8 @@ public class SearchFragment extends Fragment {
     public void uploadList(){
         FirebaseDatabase database = MainActivity.getFirebaseDatabase();
         DatabaseReference myRef = database.getReference().child("Category Name");
+        myRef.removeValue();
+
         //Log.i(TAG, "onClick: " + myRef.getKey();
         myRef.setValue(Singleton.getInstance().getCategoryNames()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -136,7 +138,7 @@ public class SearchFragment extends Fragment {
     public void addItems(){
         FirebaseDatabase database = MainActivity.getFirebaseDatabase();
 
-        for(int i = 0; i < Singleton.getInstance().getCategoryNames().size(); i++){
+        for(int i = 0; i < Singleton.getInstance().Catagories.size(); i++){
             DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items");
             for(int j =0; j < Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).size(); j ++){
                 Item item = Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).get(j);

@@ -24,6 +24,19 @@ public class Item {
         this.picture = picture;
         Date = "";
     }
+    public Item(String key, String name, String date) {
+        this.key = key;
+        Name = name;
+        if(date == null)
+            Date = "";
+        else
+            Date = date;
+    }
+    public Item(String key, String name) {
+        this.key = key;
+        Name = name;
+        Date = "";
+    }
 
     public Item(String key, String name, int itemNum, Bitmap picture, String date) {
         this.key = key;
