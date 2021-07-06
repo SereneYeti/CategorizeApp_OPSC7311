@@ -2,50 +2,140 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout2"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
-    android:background="@android:color/holo_green_light"
-    android:textSize="30sp"
+    android:background="@android:color/holo_blue_dark"
     android:tooltipText="Search Fragment">
 
 
     <Button
-        android:id="@+id/btnPublish"
+        android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload"
-        app:layout_constraintBottom_toTopOf="@+id/tvRecieveText3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.528"
+        android:layout_marginTop="19dp"
+        android:text="Search"
+        app:layout_constraintEnd_toStartOf="@+id/btnClear"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.486" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSearchItemName" />
 
     <TextView
-        android:id="@+id/tvRecieveText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:text="This text should have changed!"
+        android:id="@+id/tvChooseCat"
+        android:layout_width="411dp"
+        android:layout_height="26dp"
+        android:background="#d3d3d3"
+        android:text="Choose Category"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tvSearchItemName"
+        android:layout_width="149dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="#d3d3d3"
+        android:text="Enter Item Name or Key"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spChooseCategory" />
+
     <Button
-        android:id="@+id/btnDisplay"
+        android:id="@+id/btnClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="230dp"
+        android:layout_marginTop="19dp"
         android:onClick="downloadList"
-        android:text="Download"
+        android:text="Clear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnSearch"
+        app:layout_constraintTop_toBottomOf="@+id/etSearrchItem" />
+
+    <Spinner
+        android:id="@+id/spChooseCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvChooseCat" />
+
+    <EditText
+        android:id="@+id/etSearrchItem"
+        android:layout_width="258dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Item Name or Item Key"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tvSearchItemName"
+        app:layout_constraintTop_toBottomOf="@+id/spChooseCategory" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout_constrained"
+        android:layout_width="417dp"
+        android:layout_height="398dp"
+        android:layout_marginTop="125dp"
+        android:background="#98f5ff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRecieveText3" />
+        app:layout_constraintTop_toBottomOf="@+id/etSearrchItem">
+
+        <TextView
+            android:id="@+id/tvIKey"
+            android:layout_width="411dp"
+            android:layout_height="104dp"
+            android:layout_marginTop="24dp"
+            android:autoText="true"
+            android:text="Item Key: Key"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvIName"
+            android:layout_width="411dp"
+            android:layout_height="104dp"
+            android:layout_marginTop="24dp"
+            android:autoText="true"
+            android:text="Item Name: Name"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvIKey" />
+
+        <TextView
+            android:id="@+id/tvIDate"
+            android:layout_width="410dp"
+            android:layout_height="103dp"
+            android:layout_marginTop="24dp"
+            android:autoText="true"
+            android:text="Item Date: Date"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvIName" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

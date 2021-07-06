@@ -95,10 +95,12 @@ public class GraphFragment extends Fragment {
             //Log.i(TAG,(tempItem.size()+1) + "on item selected");
             BarDataSet barDataSet = new BarDataSet(barEntries, "Type");
             BarData theData = new BarData(theHeadings,barDataSet);
+            barChart.setEnabled(true);
+            barChart.getAxisLeft().setAxisMinValue(0f);
+            barChart.getAxisLeft().setGranularity(1f);
             barChart.setData(theData);
             barChart.notifyDataSetChanged();
         }
-
 
         barChart.setTouchEnabled(true);
         barChart.setDragEnabled(true);

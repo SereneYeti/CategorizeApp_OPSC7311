@@ -1,39 +1,20 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
-import android.content.ContentResolver;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.webkit.MimeTypeMap;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContentResolverCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
 import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
@@ -47,9 +28,13 @@ public class SearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     View v;
-    private TextView tv_RecieveText3;
-    Button btnPublish_;
-    Button btnTest;
+    Button btnSearch_;
+    Button btnClear_;
+    Spinner chooseCategory2;
+    EditText etSearrchItem_;
+    TextView tvIKey_;
+    TextView tvIName_;
+    TextView tvIDate_;
 
 
 
@@ -87,32 +72,38 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_search,container,false);
-        tv_RecieveText3 = v.findViewById(R.id.tvRecieveText3);
 
-        if(Singleton.getInstance().getTestVar2() != null)
-        {
-            tv_RecieveText3.setText(Singleton.getInstance().getTestVar2());
-        }
 
-        btnPublish_ = v.findViewById(R.id.btnPublish);
+        btnSearch_ = v.findViewById(R.id.btnSearch);
+        chooseCategory2 = (Spinner)v.findViewById(R.id.spChooseCategory);
+        etSearrchItem_ = v.findViewById(R.id.etSearrchItem);
+        tvIDate_ = v.findViewById(R.id.tvIDate);
+        tvIName_ = v.findViewById(R.id.tvIName);
+        tvIKey_ = v.findViewById(R.id.tvIKey);
+        btnClear_ = v.findViewById(R.id.btnClear);
+        SetUpSpinner();
 
-        Log.i(TAG, "HELLO! ");
-        btnPublish_.setOnClickListener(new View.OnClickListener() {
+        btnSearch_.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                //SetDatabaseValue("Category Name", "Named Category");
-                //SetDatabaseValue("Goal", "10");
-                //SetDatabaseValue("message", " Test message, from cruel cruel reality!");
-                //Log.i(TAG, "onClick: ");
+            public void onClick(View v)
+            {
+                Item tempItem = findItem(etSearrchItem_.getText().toString());
+                tvIKey_.setText(tempItem.key);
+                tvIName_.setText(tempItem.Name);
+                tvIDate_.setText(tempItem.Date);
             }
         });
 
-        btnTest = v.findViewById(R.id.btnDisplay);
-
-        btnTest.setOnClickListener(new View.OnClickListener() {
+        btnClear_.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                chooseCategory2.setSelection(0);
+                etSearrchItem_.setText("Item Name or Item Key");
+
+                tvIDate_.setText("Item Date: dd/mm/yy");
+                tvIName_.setText("Item Name: Name");
+                tvIKey_.setText("Item Key: Key");
 
             }
         });
@@ -120,8 +111,44 @@ public class SearchFragment extends Fragment {
         return v;
     }
 
+    public void SetUpSpinner(){
+        ArrayList<String> options2=new ArrayList<String>();
+        if(Singleton.getInstance() != null)
+        {
+            options2 = new ArrayList<String>(Singleton.getInstance().getCategoryNames());
+            //ArrayList<String> data = savedInstanceState.getStringArrayList("itemsArrayList");
+            //options = data;
+        }
+        else
+        {
+            options2 = new ArrayList<String>(new ArrayList<>());
+        }
+        //options = new ArrayList<>(Singleton.getInstance().getCategories());
 
 
 
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,options2);
+        adapter2.notifyDataSetChanged();
+        chooseCategory2.setAdapter(adapter2);
+
+
+    }
+
+    public Item findItem(String i){
+        Item item = new Item();
+        ArrayList<Item> tempList = Singleton.getInstance().Catagories.get(chooseCategory2.getSelectedItem().toString());
+        for(Item it : tempList){
+            if(it.Name.equals(i)||it.key.equals(i))
+            {
+                item = it;
+                break;
+            }
+            else
+            {
+                item  = new Item("Key","Name","dd/mm/yy");
+            }
+        }
+        return  item;
+    }
 
 }
