@@ -1,5 +1,6 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -102,6 +104,9 @@ public class GraphFragment extends Fragment {
             barChart.notifyDataSetChanged();
         }
 
+        barChart.setNoDataText("No Graph Found!");
+        barChart.setDrawBorders(true);
+        barChart.setBorderColor(000000);
         barChart.setTouchEnabled(true);
         barChart.setDragEnabled(true);
         barChart.setScaleEnabled(true);

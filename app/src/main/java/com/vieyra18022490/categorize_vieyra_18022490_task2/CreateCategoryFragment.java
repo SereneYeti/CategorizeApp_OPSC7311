@@ -37,7 +37,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.ArrayList;
 
 public class CreateCategoryFragment extends Fragment {
@@ -52,16 +51,17 @@ public class CreateCategoryFragment extends Fragment {
     private String mParam2;
     View v;
     //private TextView tv_RecieveText2;
-    public Button btn_Capture;
-    public Button btn_Create;
-    public EditText et_ItemName;
-    public EditText et_GoalAmount;
+    private Button btn_Capture;
+    private Button btn_Create;
+    private EditText et_ItemName;
+    private EditText et_GoalAmount;
     ImageView iv_CategoryPicture;
     Spinner mSpinner;
     public EditText et_ItemDate;
     private Bitmap bitmap;
     private DatabaseReference root_Images = MainActivity.getFirebaseDatabase().getReference();
     private StorageReference reference = FirebaseStorage.getInstance("gs://categorize-app-poe-prototype.appspot.com").getReference();
+    String test = "";
 
     public CreateCategoryFragment() {
         // Required empty public constructor
@@ -105,6 +105,7 @@ public class CreateCategoryFragment extends Fragment {
         iv_CategoryPicture = v.findViewById(R.id.ivCategoryPicture);
         et_ItemName = v.findViewById(R.id.etItemName);
         et_ItemDate = v.findViewById(R.id.etItemDate);
+
         //et_GoalAmount = v.findViewById(R.id.etGoalNumItems);
 
         btn_Capture.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +179,9 @@ public class CreateCategoryFragment extends Fragment {
                                     ArrayList<Item> tempItems = Singleton.getInstance().Catagories.get(mSpinner.getSelectedItem().toString());
                                     Log.i(TAG,"HERE3: " + mSpinner.getSelectedItem().toString());
                                     item.itemNum = tempItems.size();
+
                                     tempItems.add(tempItems.size(),item);
+
                                     Singleton.getInstance().Catagories.replace(mSpinner.getSelectedItem().toString(),tempItems);
                                     Toast.makeText(context,"Item Saved!", Toast.LENGTH_SHORT).show();
 
@@ -277,39 +280,21 @@ public class CreateCategoryFragment extends Fragment {
             myRef.setValue(Singleton.getInstance().Goals.get(i));
         }
     }
-
-    public void addItems(){
+    private void UploadUriToFirebase(Uri uri,String key, int i) {
         FirebaseDatabase database = MainActivity.getFirebaseDatabase();
-
-        for(int i = 0; i < Singleton.getInstance().Catagories.size(); i++){
-            DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items");
-            for(int j =0; j < Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).size(); j ++){
-                Item item = Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).get(j);
-                String key = item.key;
-                String name = item.getName();
-                String date = item.getDate();
-                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Key");
-                myRef.setValue(key);
-                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Name");
-                myRef.setValue(name);
-                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Date");
-                myRef.setValue(date);
-
-            }
-
-        }
-    }
-
-    private void UploadUriToFirebase(Uri uri) {
+        DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Uri");
         StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
+        myRef.setValue(System.currentTimeMillis() + "." + getFileExtension(uri));
         fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
+                        //test = uri.toString();
+                        Log.i(TAG,"1:" + test);
                         Toast.makeText(v.getContext(),"Upload Success",Toast.LENGTH_SHORT).show();
+                        myRef.setValue(uri.toString());
                     }
                 });
             }
@@ -325,7 +310,38 @@ public class CreateCategoryFragment extends Fragment {
 
             }
         });
+        //Log.i(TAG,"2:" + test);
+
     }
+
+    public void addItems(){
+        FirebaseDatabase database = MainActivity.getFirebaseDatabase();
+
+        for(int i = 0; i < Singleton.getInstance().Catagories.size(); i++){
+            DatabaseReference myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items");
+            for(int j =0; j < Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).size(); j ++){
+                Item item = Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(i)).get(j);
+                String key = item.key;
+                String name = item.getName();
+                String date = item.getDate();
+                String uri = getImageUri(item.picture).toString();
+                UploadUriToFirebase(Uri.parse(uri),key,i);
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child("Key");
+                myRef.setValue(key);
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Name");
+                myRef.setValue(name);
+                myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Date");
+                myRef.setValue(date);
+                //uri = test;
+                //myRef = database.getReference().child("Category Name").child(Singleton.getInstance().categoryNames.get(i)).child("Items").child(key).child("Uri");
+                //myRef.setValue(test);
+
+            }
+
+        }
+    }
+
+
 
     private String getFileExtension(Uri mUri) {
         ContentResolver cr = v.getContext().getContentResolver();

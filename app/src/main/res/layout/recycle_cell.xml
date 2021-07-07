@@ -19,19 +19,19 @@
         android:layout_height="50dp"
         android:layout_below="@id/recycleCellImage"
         android:layout_centerHorizontal="true"
-        android:gravity="center_vertical"
+        android:gravity="center|center_vertical"
         android:text="Place holder"
-        android:textAlignment="center"
         android:textSize="18sp" />
+
     <TextView
         android:id="@+id/recycleCellText2"
         android:layout_width="254dp"
         android:layout_height="50dp"
         android:layout_below="@id/recycleCellText"
         android:layout_centerHorizontal="true"
-        android:gravity="center_vertical"
+        android:gravity="center|center_vertical"
         android:text="Place holder"
-        android:textAlignment="center"
         android:textSize="18sp" />
+
 
 </RelativeLayout>

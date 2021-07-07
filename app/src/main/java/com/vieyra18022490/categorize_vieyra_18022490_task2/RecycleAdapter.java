@@ -51,6 +51,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
             recycleImage = (ImageView) itemView.findViewById(R.id.recycleCellImage);
             recycleText = (TextView) itemView.findViewById(R.id.recycleCellText);
             recycleText2 = (TextView) itemView.findViewById(R.id.recycleCellText2);
+
         }
     }
 }

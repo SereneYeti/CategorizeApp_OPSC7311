@@ -8,6 +8,8 @@ public class Recycling {
     private String name;
     private Bitmap image;
     private String goalAmount;
+    private String customHeader;
+    private String customItem;
 
     public String getDateCreated() {
         return DateCreated;
@@ -57,5 +59,21 @@ public class Recycling {
         this.image = image;
         this.goalAmount = goalAmount;
         this.DateCreated = dateCreated;
+    }
+
+    public String getCustomHeader() {
+        return customHeader;
+    }
+
+    public void setCustomHeader(String customHeader) {
+        this.customHeader = customHeader;
+    }
+
+    public String getCustomItem() {
+        return customItem;
+    }
+
+    public void setCustomItem(String customItem) {
+        this.customItem = customItem;
     }
 }

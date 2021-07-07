@@ -7,12 +7,16 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -31,10 +36,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     public String testVar;
     Runnable testRunnable;
     Handler testHandler = new Handler();
+    static Context context;
 
     public String getTestVar() {
         return testVar;
@@ -54,8 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = getApplicationContext();
+        Log.i(TAG,"ELLLLOOOENFEOIS"+context);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
 
         BottomNavigationView bottonNav = findViewById(R.id.bottom_navigation);
@@ -93,7 +109,30 @@ public class MainActivity extends AppCompatActivity {
     public static FirebaseDatabase getFirebaseDatabase() {
         return FirebaseDatabase.getInstance("https://categorize-app-poe-prototype-default-rtdb.europe-west1.firebasedatabase.app/");
     }
-    public static void downloadList(){
+    public static Bitmap getBitmapFromUri(Context context, Uri uri) {
+        ParcelFileDescriptor parcelFileDescriptor = null;
+        try {
+            parcelFileDescriptor =
+                    context.getContentResolver().openFileDescriptor(uri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+            return image;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load image.", e);
+            return null;
+        } finally {
+            try {
+                if (parcelFileDescriptor != null) {
+                    parcelFileDescriptor.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Error closing ParcelFile Descriptor");
+            }
+        }
+    }
+    public void downloadList(){
         FirebaseDatabase database = MainActivity.getFirebaseDatabase();
         DatabaseReference myRef = database.getReference().child("Category Name");
         ArrayList<String> testGoals = new ArrayList<>();
@@ -123,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
                             catName = dss.getValue().toString();
                             testNames.add(catName);
                             tempDict.put(catName, new ArrayList<>());
+                            Collator.getInstance().setStrength(Collator.TERTIARY);
+                            testNames.sort(Collator.getInstance());
                         }
 
                         if(count >= startCount/2)
@@ -149,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                                             String key =  new String();
                                             String name =  new String();
                                             String date =  new String();
+                                            String uri;
                                             key = dss3.getKey();
                                             if(key.contains("Item0"))
                                             {
@@ -158,10 +200,12 @@ public class MainActivity extends AppCompatActivity {
                                             {
                                                 name = dss3.child("Name").getValue().toString();
                                                 date = dss3.child("Date").getValue().toString();
-                                                //String uri = dss3.child("ImageUri").getValue().toString();
+                                                uri = dss3.child("Uri").getValue().toString();
+
+
                                                 //testItems.add(new Item(key,name,date));
 
-                                                tempDict.get(testNames.get(dCnt)).add(new Item(key,name,date));
+                                                tempDict.get(testNames.get(dCnt)).add(new Item(key,name,date,uri));
                                             }
                                         }
 
@@ -202,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 //    public void OpenItemsListFragment(String key, int goal)
 //    {

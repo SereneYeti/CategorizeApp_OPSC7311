@@ -13,25 +13,29 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="409dp"
-        android:layout_height="352dp"
-        android:layout_marginTop="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#E3E3E3"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCategoryName_HomeFragment"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tvCategoryGoalAmount2"
-        android:layout_width="315dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="13dp"
+        android:layout_width="205dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
         android:text="Enter the amount you wish to set as your goal:"
+        android:textAlignment="textEnd"
+        android:textAllCaps="true"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:visibility="invisible"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/tvCategoryGoal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_CategoryName_" />
 
@@ -40,7 +44,6 @@
         android:layout_width="172dp"
         android:layout_height="72dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="8dp"
         android:autoText="false"
         android:capitalize="sentences"
         android:ems="10"
@@ -50,49 +53,52 @@
         android:text="5"
         android:textAlignment="center"
         android:textSize="18sp"
-        android:visibility="invisible"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/btnCreateCategory_"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/tvCategoryGoalAmount2"
-        app:layout_constraintTop_toBottomOf="@+id/btnCreateCategory_" />
+        app:layout_constraintTop_toBottomOf="@+id/et_CategoryName_" />
 
     <Button
         android:id="@+id/btnCreateCategory_"
-        android:layout_width="176dp"
-        android:layout_height="72dp"
+        android:layout_width="106dp"
+        android:layout_height="51dp"
+        android:autoText="true"
         android:text="Create Category"
         android:textAlignment="center"
-        android:textSize="14sp"
-        android:visibility="invisible"
+        android:textSize="12sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCategoryGoalAmount2" />
 
     <EditText
         android:id="@+id/et_CategoryName_"
-        android:layout_width="314dp"
-        android:layout_height="73dp"
+        android:layout_width="262dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="text"
         android:text="Enter Category Name to create"
         android:textSize="14sp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/btnCreateCategory_"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.798"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#CCC2C2"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCategoryGoalAmount2"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintHorizontal_bias="0.583"
+        app:layout_constraintStart_toStartOf="parent">
 
     </ListView>
 
@@ -100,25 +106,43 @@
         android:id="@+id/tvCategoryGoal"
         android:layout_width="152dp"
         android:layout_height="98dp"
+        android:layout_marginEnd="16dp"
         android:text="Amount till goal reached:"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tvCategoryName_HomeFragment"
-        android:layout_width="145dp"
-        android:layout_height="90dp"
-        android:layout_marginEnd="97dp"
+        android:layout_width="166dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Category Name"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/tvCategoryGoal"
+        app:layout_constraintHorizontal_bias="0.288"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvEnterCatName"
+        android:layout_width="107dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="4dp"
+        android:text="Category Name"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

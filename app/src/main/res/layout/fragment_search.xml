@@ -50,8 +50,7 @@
         android:id="@+id/btnClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="230dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="16dp"
         android:onClick="downloadList"
         android:text="Clear"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,20 +82,21 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout_constrained"
-        android:layout_width="417dp"
-        android:layout_height="398dp"
-        android:layout_marginTop="125dp"
+        android:layout_width="385dp"
+        android:layout_height="366dp"
+        android:layout_marginTop="65dp"
         android:background="#98f5ff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSearrchItem">
+        app:layout_constraintTop_toBottomOf="@+id/etSearrchItem"
+        app:layout_constraintVertical_bias="0.012">
 
         <TextView
             android:id="@+id/tvIKey"
-            android:layout_width="411dp"
-            android:layout_height="104dp"
-            android:layout_marginTop="24dp"
+            android:layout_width="374dp"
+            android:layout_height="103dp"
+            android:layout_marginTop="16dp"
             android:autoText="true"
             android:text="Item Key: Key"
             android:textAlignment="center"
@@ -109,9 +109,9 @@
 
         <TextView
             android:id="@+id/tvIName"
-            android:layout_width="411dp"
-            android:layout_height="104dp"
-            android:layout_marginTop="24dp"
+            android:layout_width="377dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="16dp"
             android:autoText="true"
             android:text="Item Name: Name"
             android:textAlignment="center"
@@ -124,9 +124,9 @@
 
         <TextView
             android:id="@+id/tvIDate"
-            android:layout_width="410dp"
-            android:layout_height="103dp"
-            android:layout_marginTop="24dp"
+            android:layout_width="381dp"
+            android:layout_height="101dp"
+            android:layout_marginTop="16dp"
             android:autoText="true"
             android:text="Item Date: Date"
             android:textAlignment="center"

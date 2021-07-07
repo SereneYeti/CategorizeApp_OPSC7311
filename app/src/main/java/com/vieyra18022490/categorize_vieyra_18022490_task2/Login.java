@@ -61,7 +61,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FirebaseApp.initializeApp(this);
-        MainActivity.downloadList();
+        MainActivity mainActivity = new MainActivity();
+        mainActivity.downloadList();
 
         uname = (EditText) findViewById(R.id.et_username);
         upass = (EditText) findViewById(R.id.et_password);

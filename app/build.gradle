@@ -27,6 +27,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures{
+        viewBinding true
+    }
 }
 repositories {
     maven { url 'https://jitpack.io' }
@@ -51,5 +54,7 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.8.1'
     apply plugin: 'com.google.gms.google-services'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 
 }

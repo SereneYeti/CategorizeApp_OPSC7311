@@ -1,7 +1,13 @@
 package com.vieyra18022490.categorize_vieyra_18022490_task2;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Debug;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,7 +27,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.vieyra18022490.categorize_vieyra_18022490_task2.databinding.ActivityMainBinding;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -37,16 +58,19 @@ public class HomeFragment extends Fragment {
     private TextView goalAmountText;
     private TextView tvCategoryName_HomeFrag;
     private TextView tvCategoryGoal_Remaining;
+    private TextView tvEnterCatName_;
 
     private ArrayList<String> items;
     private ArrayAdapter itemsadapter;
     private ListView listView;
+    ActivityMainBinding binding;
 
     ArrayList<Recycling> recyclingArrayList = new ArrayList<Recycling>();
     RecyclerView recyclerView;
 
     View v;
     String names [];
+    Boolean test;
 
     //ListView listView;
 
@@ -83,6 +107,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        test = false;
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -91,15 +117,63 @@ public class HomeFragment extends Fragment {
         //setUpRecycler();
     }
 
+    public void SetUpPicture(Item item){
+        String imageID = item.uri.toString();
+        Log.i(TAG,imageID);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(imageID);
+        try {
+            File localFile = File.createTempFile("tempFile",".jpg");
+            storageReference.getFile(localFile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            item.picture = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            test = true;
+                            Log.i(TAG,String.valueOf(test));
+                            Log.i(TAG,item.picture.toString());
+                            Log.i(TAG,"INHERE");
 
+                            //item.imageView.setImageBitmap(item.picture);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    test = false;
+                    Log.i(TAG,String.valueOf(test));
+
+                }
+            });
+            //Glide.with(v.getContext()).load(item.uri).load(item.picture);
+            //item.picture = item.imageView.getDrawingCache();
+        }catch (Exception e)
+        {
+            //Log.e(TAG,"GLIDE: "+ v.getContext().toString());
+            //Log.e(TAG,"GLIDE: "+ Glide.get(v.getContext()).toString());
+            //Log.e(TAG,"ITEM URI "+ item.uri );
+            //Log.e(TAG,"image view "+ item.imageView.toString());
+            Log.e(TAG,"Error: SETUP: "+ e );
+        }
+    }
 
 
    private void initialiseList(String CategoryName, int goalAmount) {
         ArrayList<Item> tempItemsList = Singleton.getInstance().Catagories.get(CategoryName);
        for (Item item: tempItemsList
             ) {
-           Recycling temp = new Recycling(String.valueOf(item.itemNum),item.Name,item.picture, String.valueOf(goalAmount), item.Date);
-           recyclingArrayList.add(temp);
+           //Log.i(TAG,v.getContext().toString());
+           try {
+               SetUpPicture(item);
+               Log.i(TAG,String.valueOf(test));
+               Recycling temp = new Recycling(String.valueOf(item.itemNum),item.Name,item.picture, String.valueOf(goalAmount), item.Date);
+               recyclingArrayList.add(temp);
+               Log.i(TAG,String.valueOf(test));
+
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+
+
 
        }
 
@@ -140,13 +214,13 @@ public class HomeFragment extends Fragment {
         goalAmountText = v.findViewById(R.id.tvCategoryGoalAmount2);
         tvCategoryGoal_Remaining = v.findViewById(R.id.tvCategoryGoal);
         tvCategoryName_HomeFrag = v.findViewById(R.id.tvCategoryName_HomeFragment);
-
+        tvEnterCatName_ = v.findViewById(R.id.tvEnterCatName);
 
         button.setOnClickListener(new  View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("key",editText.getText().toString());
+                bundle.putString("key",editText.getText().toString().toLowerCase());
 
                 AddItemsFragment itemsFragment = new AddItemsFragment();
                 itemsFragment.setArguments(bundle);
@@ -183,7 +257,7 @@ public class HomeFragment extends Fragment {
 
         //Log.i(TAG, " Is this empty: " + String.valueOf(Singleton.getInstance().Categories.isEmpty()));
 
-        if(Singleton.getInstance().categoryNames.isEmpty() == false && Singleton.getInstance().categoryNames.size() != 0)
+        if(!Singleton.getInstance().categoryNames.isEmpty()&& Singleton.getInstance().categoryNames.size() != 0)
         {
             List<String> test = Singleton.getInstance().getCategoryNames();
             //Log.i(TAG, "I'm in!");
@@ -235,8 +309,11 @@ public class HomeFragment extends Fragment {
                 //mainActivity.setTestRunnable(Singleton.getInstance().categoryNames.get(position), Singleton.getInstance().Goals.get(position));
                 tvCategoryName_HomeFrag.setText("Category Name: " + Singleton.getInstance().getCategoryNames().get(position));
                 int goalRemaining = (Singleton.getInstance().Goals.get(position) - Singleton.getInstance().Catagories.get(Singleton.getInstance().categoryNames.get(position)).size());
-                Log.i(TAG, "Goal Remaining"+ String.valueOf(goalRemaining));
-                tvCategoryGoal_Remaining.setText("Amount left until category goal is reached: " +  String.valueOf(goalRemaining));
+                //Log.i(TAG, "Goal Remaining"+ String.valueOf(goalRemaining));
+                if(goalRemaining <=0)
+                    tvCategoryGoal_Remaining.setText("Amount left until category goal is reached: " +  String.valueOf(0));
+                else
+                    tvCategoryGoal_Remaining.setText("Amount left until category goal is reached: " +  String.valueOf(goalRemaining));
                 ShowItemListUI();
                 setUpRecycler();
                 initialiseList(Singleton.getInstance().getCategoryNames().get(position),(Singleton.getInstance().Goals.get(position)));
@@ -292,6 +369,7 @@ public class HomeFragment extends Fragment {
         goalText.setVisibility(View.INVISIBLE);
         listView.setVisibility(View.INVISIBLE);
         goalAmountText.setVisibility(View.INVISIBLE);
+        tvEnterCatName_.setVisibility(View.INVISIBLE);
     }
 
     private void ShowCreateCategoryUI(){
@@ -300,6 +378,7 @@ public class HomeFragment extends Fragment {
         goalText.setVisibility(View.VISIBLE);
         listView.setVisibility(View.VISIBLE);
         goalAmountText.setVisibility(View.VISIBLE);
+        tvEnterCatName_.setVisibility(View.VISIBLE);
     }
 
     private void HideItemListUI(){
