@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                                     testGoals.add(goals);
                                 }
                                 for(int g = 0; g < goals.length();g++){
-                                    Log.i(TAG,"Goals:"  + testGoals.get(g) + ",");
+                                    //Log.i(TAG,"Goals:"  + testGoals.get(g) + ",");
                                 }
                             }
                         }

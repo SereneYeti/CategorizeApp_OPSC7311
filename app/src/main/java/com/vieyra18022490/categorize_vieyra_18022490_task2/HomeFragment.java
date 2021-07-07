@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment {
             ) {
            //Log.i(TAG,v.getContext().toString());
            try {
-               SetUpPicture(item);
+               //SetUpPicture(item);
                Log.i(TAG,String.valueOf(test));
                Recycling temp = new Recycling(String.valueOf(item.itemNum),item.Name,item.picture, String.valueOf(goalAmount), item.Date);
                recyclingArrayList.add(temp);
